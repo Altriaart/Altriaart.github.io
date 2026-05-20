@@ -1,0 +1,53 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const artwork = await getCollection('artwork');
+  return artwork.map(piece => ({
+    params: { slug: piece.slug },
+    props: { piece },
+  }));
+}
+
+const { piece } = Astro.props;
+const { Content } = await piece.render();
+
+const year = piece.data.date.getFullYear();
+---
+<Base title={piece.data.title}>
+  <a href="/artwork" class="back-link">&larr; All artwork</a>
+
+  <div class="single-layout">
+    <img
+      src={piece.data.image}
+      alt={piece.data.title}
+      class="single-image"
+    />
+
+    <div class="single-info">
+      <h1>{piece.data.title}</h1>
+
+      <table class="meta-table">
+        <tr>
+          <td>Year</td>
+          <td>{year}</td>
+        </tr>
+        <tr>
+          <td>Medium</td>
+          <td>{piece.data.medium}</td>
+        </tr>
+        {piece.data.dimensions && (
+          <tr>
+            <td>Size</td>
+            <td>{piece.data.dimensions}</td>
+          </tr>
+        )}
+      </table>
+
+      <div class="description">
+        <Content />
+      </div>
+    </div>
+  </div>
+</Base>

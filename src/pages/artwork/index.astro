@@ -1,0 +1,62 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const allArtwork = await getCollection('artwork');
+const sorted = allArtwork.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const allTags = [...new Set(sorted.flatMap(p => p.data.tags))].sort();
+---
+<Base title="Artwork" description="Gallery of paintings, drawings, and other works.">
+  <div class="page-header">
+    <h1>Artwork</h1>
+    <p>Paintings, drawings, and studies.</p>
+  </div>
+
+  <div class="filter-bar" id="filter-bar">
+    <button class="filter-btn active" data-tag="all">All</button>
+    {allTags.map(tag => (
+      <button class="filter-btn" data-tag={tag}>{tag}</button>
+    ))}
+  </div>
+
+  <div class="gallery-grid" id="gallery">
+    {sorted.map(piece => (
+      <a
+        href={`/artwork/${piece.slug}`}
+        class="gallery-card"
+        data-tags={piece.data.tags.join(',')}
+      >
+        <img
+          src={piece.data.image}
+          alt={piece.data.title}
+          class="card-image"
+          loading="lazy"
+        />
+        <div class="card-meta">
+          <h3>{piece.data.title}</h3>
+          <p>{piece.data.medium}{piece.data.dimensions ? ` — ${piece.data.dimensions}` : ''}</p>
+        </div>
+      </a>
+    ))}
+  </div>
+</Base>
+
+<script>
+  const bar = document.getElementById('filter-bar')!;
+  const cards = document.querySelectorAll<HTMLElement>('.gallery-card');
+
+  bar.addEventListener('click', e => {
+    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('.filter-btn');
+    if (!btn) return;
+
+    bar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const tag = btn.dataset.tag!;
+    cards.forEach(card => {
+      const tags = card.dataset.tags?.split(',') ?? [];
+      card.style.display = (tag === 'all' || tags.includes(tag)) ? '' : 'none';
+    });
+  });
+</script>

@@ -1,0 +1,48 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const featured = await getCollection('artwork', ({ data }) => data.featured);
+---
+<Base title="Your Name">
+  <section class="about-section">
+    <h1>Your Name</h1>
+    <p>
+      A short sentence about who you are — artist, designer, developer, or all three.
+      Keep it grounded: what you make and why it matters to you.
+    </p>
+    <p>
+      A second paragraph is fine for more context — where you're based, what you're
+      currently working on, or how to reach you.
+    </p>
+    <p>
+      Email: <a href="mailto:you@example.com">you@example.com</a>
+    </p>
+
+    <div class="section-links">
+      <a href="/artwork">View artwork &rarr;</a>
+      <a href="/projects">View projects &rarr;</a>
+    </div>
+  </section>
+
+  {featured.length > 0 && (
+    <section style="margin-top: 4rem;">
+      <h2>Selected works</h2>
+      <div class="gallery-grid">
+        {featured.map(piece => (
+          <a href={`/artwork/${piece.slug}`} class="gallery-card">
+            <img
+              src={piece.data.image}
+              alt={piece.data.title}
+              class="card-image"
+            />
+            <div class="card-meta">
+              <h3>{piece.data.title}</h3>
+              <p>{piece.data.medium}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+</Base>

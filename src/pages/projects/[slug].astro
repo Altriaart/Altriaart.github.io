@@ -1,0 +1,65 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map(project => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await project.render();
+---
+<Base title={project.data.title} description={project.data.description}>
+  <a href="/projects" class="back-link">&larr; All projects</a>
+
+  <div class="single-layout">
+    {project.data.image && (
+      <img
+        src={project.data.image}
+        alt={project.data.title}
+        class="single-image"
+      />
+    )}
+
+    <div class="single-info">
+      <h1>{project.data.title}</h1>
+
+      <table class="meta-table">
+        <tr>
+          <td>Year</td>
+          <td>{project.data.date.getFullYear()}</td>
+        </tr>
+        {project.data.tags.length > 0 && (
+          <tr>
+            <td>Tags</td>
+            <td>
+              <div class="tags" style="margin-top: 0.2rem;">
+                {project.data.tags.map(tag => (
+                  <span class="tag">{tag}</span>
+                ))}
+              </div>
+            </td>
+          </tr>
+        )}
+        {project.data.url && (
+          <tr>
+            <td>Link</td>
+            <td>
+              <a href={project.data.url} target="_blank" rel="noopener" style="text-decoration:underline;">
+                {project.data.url.replace(/^https?:\/\//, '')}
+              </a>
+            </td>
+          </tr>
+        )}
+      </table>
+
+      <div class="description">
+        <Content />
+      </div>
+    </div>
+  </div>
+</Base>
