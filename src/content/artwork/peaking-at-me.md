@@ -1,11 +1,13 @@
 ---
 title: "Peaking At Me"
-date: 2026
+date: 2026-01-01
 medium: "Pastel and Graphite on Paper"
 dimensions: "30 × 21 cm"
 image: "/images/artwork/Peaking At Me.jpg"
-tags: [drawing, monotone, illustration]
+tags: [drawing, monotone, illustration, pastel]
 featured: false
 ---
 
-Painted on location during a short residency. The colour temperature shifts quickly in those final minutes — this is a memory as much as an observation.
+A part of the *Night Thoughts* series where I daydream at night and draw my thoughts on paper. 
+
+Living along, I sometimes feel distanced from the outside world. This drawing is a reflection of lost identity when we are put in a world we are not sure if we belong to. 

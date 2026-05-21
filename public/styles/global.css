@@ -215,6 +215,14 @@ p  { margin-bottom: 1rem; }
 .about-section h1 { margin-bottom: 1.5rem; }
 .about-section p { font-size: 1.05rem; color: var(--text); }
 
+.profile-pic {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1.5rem;
+}
+
 .section-links {
   display: flex;
   gap: 1.5rem;
