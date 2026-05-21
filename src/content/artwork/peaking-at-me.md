@@ -10,4 +10,4 @@ featured: false
 
 A part of the *Night Thoughts* series where I daydream at night and draw my thoughts on paper. 
 
-Living along, I sometimes feel distanced from the outside world. This drawing is a reflection of lost identity when we are put in a world we are not sure if we belong to. 
+Living alone, I sometimes feel distanced from the outside world. This drawing is a reflection of lost identity when we are put in a world we are not sure if we belong to. 
