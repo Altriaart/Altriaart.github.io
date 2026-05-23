@@ -109,14 +109,6 @@ p  { margin-bottom: 1rem; }
 
 .gallery-card:hover .card-image { opacity: 0.9; }
 
-.card-image {
-  aspect-ratio: 4/3;
-  object-fit: cover;
-  width: 100%;
-  transition: opacity 0.2s;
-  background: var(--border);
-}
-
 .card-meta {
   padding: 0.75rem 0 0;
   font-family: var(--font-ui);
@@ -233,6 +225,69 @@ p  { margin-bottom: 1rem; }
 .section-links a {
   text-decoration: underline;
   text-underline-offset: 3px;
+}
+
+/* ── Carousel ── */
+.card-image-wrap {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-image {
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  width: 100%;
+  transition: opacity 0.3s ease;
+  background: var(--border);
+  display: block;
+}
+
+.gallery-card:hover .card-image { opacity: 0.95; }
+
+.carousel-dots {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.35rem;
+}
+
+.dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.5);
+  transition: background 0.2s;
+}
+
+.dot.active {
+  background: rgba(255,255,255,0.95);
+}
+
+/* ── Artwork gallery (individual page) ── */
+.artwork-single-image {
+  width: 100%;
+  max-width: 780px;
+}
+
+.artwork-single-image .artwork-gallery-img {
+  width: 100%;
+  height: auto;
+}
+
+.artwork-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--gap);
+}
+
+.artwork-gallery-img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+  background: var(--border);
 }
 
 /* ── Tag filter (artwork page) ── */

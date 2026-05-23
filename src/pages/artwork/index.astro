@@ -21,42 +21,81 @@ const allTags = [...new Set(sorted.flatMap(p => p.data.tags))].sort();
   </div>
 
   <div class="gallery-grid" id="gallery">
-    {sorted.map(piece => (
-      <a
-        href={`/artwork/${piece.slug}`}
-        class="gallery-card"
-        data-tags={piece.data.tags.join(',')}
-      >
-        <img
-          src={piece.data.image}
-          alt={piece.data.title}
-          class="card-image"
-          loading="lazy"
-        />
-        <div class="card-meta">
-          <h3>{piece.data.title}</h3>
-          <p>{piece.data.medium}{piece.data.dimensions ? ` — ${piece.data.dimensions}` : ''}</p>
-        </div>
-      </a>
-    ))}
+    {sorted.map(piece => {
+      const allImages = [piece.data.image, ...piece.data.images];
+      return (
+        <a
+          href={`/artwork/${piece.slug}`}
+          class="gallery-card"
+          data-tags={piece.data.tags.join(',')}
+          data-images={allImages.join('|')}
+        >
+          <div class="card-image-wrap">
+            <img
+              src={piece.data.image}
+              alt={piece.data.title}
+              class="card-image"
+              loading="lazy"
+            />
+            {allImages.length > 1 && (
+              <div class="carousel-dots">
+                {allImages.map((_, i) => (
+                  <span class={`dot ${i === 0 ? 'active' : ''}`} />
+                ))}
+              </div>
+            )}
+          </div>
+          <div class="card-meta">
+            <h3>{piece.data.title}</h3>
+            <p>{piece.data.medium}{piece.data.dimensions ? ` — ${piece.data.dimensions}` : ''}</p>
+          </div>
+        </a>
+      );
+    })}
   </div>
 </Base>
 
 <script>
+  // Tag filter
   const bar = document.getElementById('filter-bar')!;
   const cards = document.querySelectorAll<HTMLElement>('.gallery-card');
 
   bar.addEventListener('click', e => {
     const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('.filter-btn');
     if (!btn) return;
-
     bar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-
     const tag = btn.dataset.tag!;
     cards.forEach(card => {
       const tags = card.dataset.tags?.split(',') ?? [];
       card.style.display = (tag === 'all' || tags.includes(tag)) ? '' : 'none';
+    });
+  });
+
+  // Hover carousel
+  cards.forEach(card => {
+    const img = card.querySelector<HTMLImageElement>('.card-image')!;
+    const dots = card.querySelectorAll<HTMLElement>('.dot');
+    const raw = card.dataset.images ?? '';
+    const allImages = raw.split('|').filter(Boolean);
+    if (allImages.length <= 1) return;
+
+    let timer: ReturnType<typeof setInterval> | null = null;
+    let idx = 0;
+
+    const goTo = (i: number) => {
+      idx = i;
+      img.src = allImages[idx];
+      dots.forEach((d, j) => d.classList.toggle('active', j === idx));
+    };
+
+    card.addEventListener('mouseenter', () => {
+      timer = setInterval(() => goTo((idx + 1) % allImages.length), 900);
+    });
+
+    card.addEventListener('mouseleave', () => {
+      if (timer) clearInterval(timer);
+      goTo(0);
     });
   });
 </script>

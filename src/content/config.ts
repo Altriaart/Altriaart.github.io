@@ -8,6 +8,7 @@ const artwork = defineCollection({
     medium: z.string(),
     dimensions: z.string().optional(),
     image: z.string(),
+    images: z.array(z.string()).default([]),
     tags: z.array(z.string()).default([]),
     featured: z.boolean().default(false),
   }),

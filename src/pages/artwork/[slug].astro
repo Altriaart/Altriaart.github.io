@@ -14,40 +14,46 @@ const { piece } = Astro.props;
 const { Content } = await piece.render();
 
 const year = piece.data.date.getFullYear();
+const allImages = [piece.data.image, ...piece.data.images];
 ---
 <Base title={piece.data.title}>
   <a href="/artwork" class="back-link">&larr; All artwork</a>
 
-  <div class="single-layout">
-    <img
-      src={piece.data.image}
-      alt={piece.data.title}
-      class="single-image"
-    />
+  <!-- Title + meta -->
+  <div class="single-info" style="margin-bottom: 2.5rem;">
+    <h1>{piece.data.title}</h1>
 
-    <div class="single-info">
-      <h1>{piece.data.title}</h1>
-
-      <table class="meta-table">
+    <table class="meta-table" style="margin-top: 1rem;">
+      <tr>
+        <td>Year</td>
+        <td>{year}</td>
+      </tr>
+      <tr>
+        <td>Medium</td>
+        <td>{piece.data.medium}</td>
+      </tr>
+      {piece.data.dimensions && (
         <tr>
-          <td>Year</td>
-          <td>{year}</td>
+          <td>Size</td>
+          <td>{piece.data.dimensions}</td>
         </tr>
-        <tr>
-          <td>Medium</td>
-          <td>{piece.data.medium}</td>
-        </tr>
-        {piece.data.dimensions && (
-          <tr>
-            <td>Size</td>
-            <td>{piece.data.dimensions}</td>
-          </tr>
-        )}
-      </table>
+      )}
+    </table>
 
-      <div class="description">
-        <Content />
-      </div>
+    <div class="description">
+      <Content />
     </div>
+  </div>
+
+  <!-- Image gallery -->
+  <div class={allImages.length === 1 ? 'artwork-single-image' : 'artwork-gallery'}>
+    {allImages.map((src, i) => (
+      <img
+        src={src}
+        alt={i === 0 ? piece.data.title : `${piece.data.title}, detail ${i}`}
+        class="artwork-gallery-img"
+        loading={i === 0 ? 'eager' : 'lazy'}
+      />
+    ))}
   </div>
 </Base>
