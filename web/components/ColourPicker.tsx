@@ -1,6 +1,6 @@
 'use client';
 import {useEffect,useRef,useState} from 'react';
-export const inks=[{name:'Midnight',value:'#1d2b50'},{name:'Deep forest',value:'#173b2c'},{name:'Aubergine',value:'#482443'},{name:'Neon pink',value:'#ff338d'},{name:'Electric blue',value:'#358cff'}];
+export const inks=[{name:'Midnight',value:'#1d2b50'},{name:'Deep forest',value:'#173b2c'},{name:'Bright yellow',value:'#FFE45E'},{name:'Neon pink',value:'#ff338d'},{name:'Electric blue',value:'#358cff'}];
 export const papers=[{name:'Warm ivory',value:'#F5E9D2'},{name:'Butter yellow',value:'#E4CE82'},{name:'Powder blue',value:'#97BBD0'},{name:'Moss green',value:'#525F40'},{name:'Midnight blue',value:'#182238'}];
 function luminance(hex:string){const c=[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16)/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4);return c[0]*.2126+c[1]*.7152+c[2]*.0722}
 export function contrast(a:string,b:string){const x=luminance(a),y=luminance(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05)}
